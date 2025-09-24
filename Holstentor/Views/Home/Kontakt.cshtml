@@ -1,0 +1,89 @@
+﻿@model MessageUserViewModel
+@{
+    ViewData["Title"] = "Kontak | Restaurant am Holstentor Lübeck";
+    Holstentor.Models.HomeRepository.HomeRep ivm = new Holstentor.Models.HomeRepository.HomeRep();
+    var qivm = ivm.GetIndexHeaderSelect();
+}
+
+@await Html.PartialAsync("P_HeaderBG")
+<!-- Main Content -->
+<main class="main minh-100vh">
+    <!-- Section -->
+    <section class="py-0 overflow-hidden text-center">
+        <div class="bg-container overlay overlay-60" data-rellax-percentage="0.5">
+            <iframe src="@qivm.EmbedLinkGoogleMap" style="width: 100%; min-height: 109vh; border:0; margin-top: -5vh;" allowfullscreen></iframe>
+        </div>
+        <div class="container">
+            <div class="row h-100vh align-items-center">
+                <div class="col" data-aos="zoom-out" data-aos-duration="1000">
+                    <h1 class="mb-4 text-white fs-2 fs-lg-4">Kontakt</h1>
+                    <h1 class="mb-4 text-white fs-1 fs-lg-2">@qivm.NameSite</h1>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-light mb-4" data-aos="fade-down" data-aos-duration="1100" data-toggle="modal" data-target="#Landkarte">Landkarte öffnen<i class="zmdi zmdi-map ml-2"></i></button>
+                    <!-- End of Button trigger modal -->
+                    <br />
+                    <a href="#section-2" class="px-3" data-smooth-scroll data-smooth-scroll-hash="false"><i class="zmdi zmdi-long-arrow-down zmdi-hc-2x text-white"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End of Section -->
+    <!-- Section -->
+    <section id="section-2" class="py-0">
+        <div class="bg-web">
+            <!-- Section -->
+            <section class="py-0 pb-3">
+                <div class="jumbotron jumbotron-fluid bg-rosa py-7">
+                    <div class="container">
+                        <h1 class="text-web fs-3 fs-lg-5 mt-5" data-aos="fade-down" data-aos-duration="1200">Kontakt</h1>
+                        <h5 class="text-black mb-2" data-aos="fade-down" data-aos-duration="1300">@qivm.NameSite</h5>
+                        <p class="text-web fs-1" data-aos="slide-left" data-aos-duration="1400"><i class="zmdi zmdi-map zmdi-hc-fw mr-1"></i><b>Adresse: </b>@qivm.Street @qivm.Number / @qivm.PostCode @qivm.City</p>
+                        <h5 class="text-web fs-1" data-aos="slide-right" data-aos-duration="1500"><i class="zmdi zmdi-phone zmdi-hc-fw mr-1"></i><b>Telefonnummer: </b><a href="tel:@qivm.PhoneNumber" class="text-web">@qivm.PhoneNumber</a></h5>
+                        <h5 class="text-web fs-1" data-aos="zoom-in-down" data-aos-duration="1600"><i class="zmdi zmdi-email zmdi-hc-fw mr-1"></i><b>E-Mail-Adresse: </b><a href="mailto:@qivm.Email" class="text-web">@qivm.Email</a></h5>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-light mb-4" data-aos="fade-right" data-aos-duration="1200" data-toggle="modal" data-target="#Landkarte">Landkarte öffnen<i class="zmdi zmdi-map ml-2"></i></button>
+                        <!-- End of Button trigger modal -->
+                        <hr />
+                        <form class="col px-5 px-lg-8 py-6 py-lg-0" asp-controller="Home" asp-action="MessageUser" method="post">
+                            <div class="form-group mb-4">
+                                <input type="text" class="form-control" asp-for="name" name="name" placeholder="Ihr Name: Bitte geben Sie Ihren Namen ein.">
+                                <span asp-validation-for="name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="email" class="form-control" asp-for="email" name="email" placeholder="Ihre E-Mail: Bitte geben Sie Ihre eigene E-Mail-Adresse an.">
+                                <span asp-validation-for="email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-4">
+                                <textarea class="form-control" rows="8" asp-for="message" name="message" placeholder="Ihre Nachricht: Bitte geben Sie den Text Ihrer Anfrage ein."></textarea>
+                                <span asp-validation-for="message" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Senden<i class="zmdi zmdi-mail-send ml-2"></i></button>
+                        </form>
+                        <hr />
+                    </div>
+                </div>
+                <h5 class="text-white mb-2 text-center" data-aos="fade-up" data-aos-duration="1700"><b>@qivm.NameSite</b></h5>
+            </section>
+            <!-- End of Section -->
+        </div>
+        @*<div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3 class="my-0 fs-1 fw-medium text-primary"></h3>
+                        <h2 class="mb-5 fw-medium text-black">Kontak</h2>
+                        <p class="mb-4 mt-3 fs-1 text-web"><i class="zmdi zmdi-map zmdi-hc-fw mr-1"></i>Beckergrube 2 23552 Lübeck</p>
+                        <a href="tel:@qivm.PhoneNumber" class="text-web"><i class="zmdi zmdi-phone zmdi-hc-fw mr-1"></i>@qivm.PhoneNumber</a><br />
+                        <a href="mailto:@qivm.Email" class="text-web"><i class="zmdi zmdi-email zmdi-hc-fw mr-1"></i>@qivm.Email</a>
+                        <p class="mb-6 fs--1 mt-3">....</p>
+                    </div>
+                </div>
+            </div>*@
+    </section>
+    <!-- End of Section -->
+</main>
+<!-- End of Main Content -->
+@await Html.PartialAsync("P_Location")
+@await Html.PartialAsync("P_Footer")
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

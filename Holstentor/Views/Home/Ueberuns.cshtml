@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Über uns | Restaurant am Holstentor Lübeck";
+    Holstentor.Models.HomeRepository.HomeRep ivm = new Holstentor.Models.HomeRepository.HomeRep();
+    var qivm = ivm.GetIndexHeaderSelect();
+    var qupload = ivm.GetHochladen();
+}
+
+@await Html.PartialAsync("P_HeaderBG")
+<!-- Main Content -->
+<main class="main minh-100vh">
+    <!-- Section -->
+    <section class="py-0 overflow-hidden text-center">
+        <div class="bg-container overlay overlay-60" data-rellax-percentage="0.5" style="background-image: url(../assets/img/backgrounds/upload/about/@qupload.ImageAbout)">
+        </div>
+        <div class="container">
+            <div class="row h-100vh align-items-center">
+                <div class="col" data-aos="zoom-out" data-aos-duration="1000">
+                    <h1 class="mb-4 text-white fs-2 fs-lg-4">Über uns</h1>
+                    <h1 class="mb-4 text-white fs-1 fs-lg-2">@qivm.NameSite</h1>
+                    <a href="#section-2" class="px-3" data-smooth-scroll data-smooth-scroll-hash="false"><i class="zmdi zmdi-long-arrow-down zmdi-hc-2x text-white"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End of Section -->
+    <!-- Section -->
+    <section id="section-2" class="py-0">
+        <div class="bg-web">
+            <!-- Section -->
+            <section class="py-0 pb-3">
+                <div class="jumbotron jumbotron-fluid bg-rosa py-7">
+                    <div class="container">
+                        <h1 class="text-web fs-3 fs-lg-5 mt-5" data-aos="fade-down" data-aos-duration="1100">Über uns</h1>
+                        <h5 class="text-black mb-2" data-aos="fade-down" data-aos-duration="1200">@qivm.NameSite</h5>
+                        <hr />
+                        <p class="fs--1 mt-3 text-justify" data-aos="flip-down" data-aos-duration="1300"><b>@qivm.Description</b></p>
+                        <hr />
+                    </div>
+                </div>
+                <h5 class="text-white mb-2 text-center" data-aos="fade-up" data-aos-duration="1400"><b>@qivm.NameSite</b></h5>
+            </section>
+            <!-- End of Section -->
+        </div>
+    </section>
+    <!-- End of Section -->
+</main>
+<!-- End of Main Content -->
+@await Html.PartialAsync("P_Footer")

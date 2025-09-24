@@ -1,0 +1,33 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = "Mein Profil";
+}
+
+<form class="col px-lg-6 px-xl-8 px-xxl-11 py-9 py-lg-4" asp-controller="Profile" asp-action="MeinProfil" method="post">
+    @*<h1 class="text-web fs-3 fs-lg-5" data-aos="fade-down" data-aos-duration="1000">Bitte loggen Sie sich ein</h1>*@
+    @*<h5 class="text-black mb-2" data-aos="fade-down" data-aos-duration="1050">Einloggen, um ihren Account zu verwalten</h5>
+        <div class="form-group mb-4" data-aos="zoom-in" data-aos-duration="1100">
+            <input type="text" class="form-control form-control-lg" placeholder="UserName" asp-for="UserName" name="UserName" value="@quser.UserName" disabled>
+        </div>*@
+    @*<h5 class="text-web mb-2">E-Mail-Addresse:</h5>*@
+    @*<div class="form-group mb-4">
+            <input type="email" class="form-control form-control-lg" placeholder="E-Mail-Addresse" asp-for="Email" name="Email" value="" disabled>
+        </div>*@
+    <h5 class="text-web mb-2">Vorname:</h5>
+    <div class="form-group mb-4">
+        <input type="text" class="form-control form-control-lg" placeholder="Name" asp-for="Name" name="Name" value="">
+        <span asp-validation-for="Name" class="bg-primary text-white"></span>
+
+    </div>
+    <h5 class="text-web mb-2">Familienname:</h5>
+    <div class="form-group mb-4">
+        <input type="text" class="form-control form-control-lg" placeholder="Familienname" asp-for="NameFamily" name="NameFamily" value="">
+        <span asp-validation-for="NameFamily" class="bg-primary text-white"></span>
+    </div>
+    <h5 class="text-web mb-2">Telefonnummer: [Beispiel 0176xxxxxxxx]</h5>
+    <div class="form-group mb-4">
+        <input type="tel" class="form-control form-control-lg" placeholder="Telefonnummer" asp-for="PhoneNumber" name="PhoneNumber" value="">
+        <span asp-validation-for="PhoneNumber" class="bg-primary text-white"></span>
+    </div>
+    <button type="submit" class="btn btn-lg btn-primary btn-block mb-4 ">Hinzufügen<i class="fas fa-plus ml-2"></i></button>
+</form>

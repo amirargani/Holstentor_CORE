@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Restaurant am Holstentor Lübeck";
+    Holstentor.Models.HomeRepository.HomeRep ivm = new Holstentor.Models.HomeRepository.HomeRep();
+    var qivm = ivm.GetIndexSelect();
+    var qupload = ivm.GetHochladen();
+    var qcategory = ivm.GetCategoryLink().ToList();
+}
+
+<!-- Header -->
+@await Html.PartialAsync("P_Header")
+<!-- End of Header -->
+<!-- Main Content -->
+<main class="main minh-100vh">
+    <!-- Section -->
+    <section class="py-0 overflow-hidden text-center">
+        <div class="bg-container overlay overlay-60 parallax" data-rellax-percentage="0.5">
+            <video class="bg-video" autoplay loop muted>
+                <source src="../assets/img/backgrounds/upload/video/@qupload.Video" type="video/mp4" /> @*http://themes.2the.me/Boomerang/assets/video/video.mp4*@
+            </video>
+        </div>
+        <div class="container">
+            <div class="row h-100vh align-items-center">
+                <div class="col" data-aos="zoom-out" data-aos-duration="1000">
+                    <h1 class="mb-4 text-white fs-2 fs-lg-3"><span id="typed"></span></h1>
+                    <h1 class="mb-4 text-white fs-1 fs-lg-2">@qivm.Title</h1>
+                    @*@{
+                        int i = 1;
+                        foreach (var itemcategory in qcategory.OrderByDescending(a => a.TitleCategory))
+                        {
+                            if (itemcategory.ActivePassive == true)
+                            {
+                                if (i % 2 == 0)
+                                {
+                                    <a href="/Home/Kategoriesuche?id=@itemcategory.Link" class="btn btn-secondary mx-2 px-3" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000"><i class="fas fa-th-list mr-2"></i>@itemcategory.TitleCategory</a>
+                                }
+                                else
+                                {
+                                    <a href="/Home/Kategoriesuche?id=@itemcategory.Link" class="btn btn-primary mx-2 px-3" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000"><i class="fas fa-th-list mr-2"></i>@itemcategory.TitleCategory</a>
+                                }
+                                i++;
+                            }
+                        }
+                    }*@
+                    @*href="/Home/Kategoriesuche?id=1"*@
+                    <a href="/Home/Menue" class="btn btn-primary mx-2 px-3" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000"><i class="fas fa-list mr-2"></i>Menü</a>
+                    <a data-toggle="modal" data-target="#Landkarte" class="btn btn-light px-5 mx-2" data-aos="fade-down" data-aos-delay="100" data-aos-duration="1000"><i class="fas fa-map-marker-alt mr-2"></i>Landkarte</a>
+                    @*href="/Account/Register"  target="_blank"*@
+                    @*@{
+                        if (!User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-light px-5 mx-2" data-aos="fade-down" data-aos-delay="100" data-aos-duration="1000"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+                        }
+                    }*@
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End of Section -->
+</main>
+<!-- End of Main Content -->
+<!-- JavaScript -->
+@await Html.PartialAsync("P_Typed")
+<!-- End of JavaScript -->
+<script type="text/javascript">
+
+    var typed = new Typed('#typed', {
+        @*strings: [@t,'Café, Kneipe, Restaurant', 'Restaurant am Holstentor', 'Die Besonderheit unseres Restaurants ist der Holzofen im Gästebereich, in dem unser hausgemachts Brot und die Pizzen gebacken werden. Neben unserer Adresse und unserem Album, finden Sie hier ebenfalls die Karten des Hauses.'],*@
+        strings: ['@qivm.TypedText1','@qivm.TypedText2','@qivm.TypedText3','@qivm.TypedText4','@qivm.TypedText5'],
+        typeSpeed: 100,
+        backSpeed: 105,
+        backDelay: 500,
+        startDelay: 1000,
+        cursorChar: '_',
+        loop: true,
+    });
+</script>

@@ -1,0 +1,164 @@
+﻿@model Nachricht_Db
+@{
+    ViewData["Title"] = "Meine Nachricht";
+    //Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var username = User.Identity.Name;
+    Holstentor.Models.ProfileRepository.MessageRep msg = new Holstentor.Models.ProfileRepository.MessageRep();
+    var qmsg = msg.GetMsgSend(username).ToList();
+    Holstentor.Models.ProfileRepository.UserRep prorep = new Holstentor.Models.ProfileRepository.UserRep();
+    var quser = prorep.GetUser(username);
+    Holstentor.Models.HomeRepository.HomeRep ivm = new Holstentor.Models.HomeRepository.HomeRep();
+    var qivm = ivm.GetIndexHeaderSelect();
+}
+
+@await Html.PartialAsync("P_HeaderBG")
+<!-- Main Content -->
+<main class="main">
+    <!-- Section -->
+    <section class="py-0">
+        <div class="bg-web">
+            <!-- Section -->
+            <section class="py-0 pb-3">
+                <div class="jumbotron jumbotron-fluid bg-rosa py-7">
+                    <div class="container">
+                        <h1 class="text-web fs-3 fs-lg-5 mt-5" data-aos="fade-down" data-aos-duration="1000">Mein persönlichen Daten</h1>
+                        <h5 class="text-black mb-2" data-aos="fade-down" data-aos-duration="1100">Mein Konto</h5>
+                        <nav>
+                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link" asp-action="Index" asp-controller="Profile">Mein Profil</a>
+                                @{
+                                    if (prorep.InsertUser(username) == true)
+                                    {
+                                        <a class="nav-item nav-link @*active*@" asp-action="Nachricht" asp-controller="Profile">Meine Nachricht</a>
+                                        <a class="nav-item nav-link" asp-action="PasswortAendern" asp-controller="Profile">Passwort</a>
+                                    }
+                                    else if (prorep.InsertUser(username) == false)
+                                    {
+                                        <a class="nav-item nav-link" asp-action="Index" asp-controller="Profile">Meine Nachricht</a>
+                                        <a class="nav-item nav-link" asp-action="Index" asp-controller="Profile">Passwort</a>
+                                    }
+                                }
+                            </div>
+                        </nav>
+
+                        <div class="tab-content py-3 px-3 px-sm-0">
+                            <div class="tab-pane fade show active">
+                                <div class="p-5 row">
+                                    <div class="col-lg-12">
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary btn-block mb-4" data-toggle="modal" data-target="#Nachricht">Nachricht senden<i class="zmdi zmdi-mail-send ml-2"></i></button>
+                                        <!-- End of Button trigger modal -->
+                                    </div>
+                                    @*<div class="col-lg-6">
+                                        <!-- Button trigger modal -->
+                                        <a class="btn btn-warning btn-block mb-4" asp-action="MessageReply" asp-controller="Profile">Nachricht empfangen<i class="zmdi zmdi-replay ml-2"></i></a>
+                                        <!-- End of Button trigger modal -->
+                                    </div>*@
+                                    <div class="table-responsive mb-2">
+                                        <table class="table table-hover table-striped table-bordered text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Nachricht gesendet</th>
+                                                    <th>Nachricht empfangen</th>
+                                                    <th>Datum</th>
+                                                    <th>Antwort</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Nachricht gesendet</th>
+                                                    <th>Nachricht empfangen</th>
+                                                    <th>Datum</th>
+                                                    <th>Antwort</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                @{
+                                                    int i = 1;
+                                                    if (qmsg.Count() > 0)
+                                                    {
+                                                        foreach (var item in qmsg.OrderByDescending(a => a.Date).Take(15))
+                                                        {
+                                                            <tr>
+                                                                <th>@i</th>
+                                                                <th class="fs--1" style="width:50%;">@item.Text</th>
+                                                                <th class="fs--1" style="width:50%;">@item.TextAdmin<br />@item.DateUpdate</th>
+                                                                <th>@item.Date</th>
+                                                                <th>
+                                                                    @if (item.Confirm == true)
+                                                                    {
+                                                                        <div class="bg-success text-white fs--1 p-1">Gelesen</div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="bg-danger text-white fs--1 p-1">Ungelesen</div>
+                                                                    }
+
+                                                                </th>
+
+                                                            </tr>
+                                                            i = i + 1;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td class="bg-danger text-white" colspan="5">Sie haben noch keine Nachricht gesendet.</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="text-white mb-2 text-center" data-aos="fade-up" data-aos-duration="1200"><b>@qivm.NameSite</b></h5>
+            </section>
+            <!-- End of Section -->
+        </div>
+    </section>
+    <!-- End of Section -->
+</main>
+<!-- End of Main Content -->
+<!-- Modal -->
+<div class="modal fade" id="Nachricht" tabindex="-1" role="dialog" aria-labelledby="Nachricht" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Neue Nachricht</h5>
+                @*<button type="button" class="text-dark close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+            <div class="modal-body">
+                <form class="" asp-controller="Profile" asp-action="NachrichtGesendet" method="post">
+                    <input type="hidden" asp-for="UserIdSend" name="UserIdSend" value="@User.Identity.Name" />
+                    <div class="form-group mb-4">
+                        <textarea type="text" asp-for="Text" class="form-control" rows="8" placeholder="Nachricht" name="Text"></textarea>
+                        <span asp-validation-for="Text" class="text-danger"></span>
+                    </div>
+                    @*<button type="submit" class="btn btn-primary btn-block">Senden<i class="zmdi zmdi-mail-send ml-2"></i></button>*@
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Schließen</button>
+                        <button type="submit" class="btn btn-success">Senden</button>
+                    </div>
+                </form>
+            </div>
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+<!-- End of Modal -->
+@*<span class="badge badge-light text-web mr-2">4</span>*@
+@await Html.PartialAsync("P_Footer")
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

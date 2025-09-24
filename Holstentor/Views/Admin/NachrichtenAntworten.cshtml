@@ -1,0 +1,59 @@
+﻿@model Nachricht_Db
+@{
+    ViewData["Title"] = "Meine Verwaltung";
+    //Layout = "~/Views/Shared/_MainLayout.cshtml";
+    Holstentor.Models.HomeRepository.HomeRep ivm = new Holstentor.Models.HomeRepository.HomeRep();
+    var qivm = ivm.GetIndexHeaderSelect();
+    Holstentor.Data.Class_DbContext.Nachricht_Db msg = new Holstentor.Data.Class_DbContext.Nachricht_Db();
+}
+
+@await Html.PartialAsync("P_HeaderBG")
+<!-- Main Content -->
+<main class="main">
+    <!-- Section -->
+    <section class="py-0">
+        <div class="bg-web">
+            <!-- Section -->
+            <section class="py-0 pb-3">
+                <div class="jumbotron jumbotron-fluid bg-rosa py-7">
+                    <div class="container">
+                        <h1 class="text-web fs-3 fs-lg-5 mt-5" data-aos="fade-down" data-aos-duration="1000">Meine Verwaltung</h1>
+                        <h5 class="text-black mb-2" data-aos="fade-down" data-aos-duration="1100">Kategoriename hinzufügen</h5>
+                        <div class="tab-content py-3 px-3 px-sm-0">
+                            <div class="tab-pane fade show active">
+                                <!-- Pagination -->
+                                <div class="col-12">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li><a class="btn btn-secondary mr-3" href="/Admin/Nachrichten"><i class="fas fa-chevron-circle-left mr-2"></i>Zurück</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <!-- End of Pagination -->
+                                <div class="container">
+                                    <form class="col px-5 px-lg-8 py-6 py-lg-0 mt-3" asp-controller="Admin" asp-action="NachrichtenAntwortenConfirmed" method="post">
+                                        <label><i class="fas fa-comment mr-2"></i>@Html.DisplayNameFor(model => model.Text): <span href="">@Html.DisplayFor(model => model.Text)</span> </label>
+                                        <input type="hidden" asp-for="@Model.ID" name="id" value="@Model.ID" />
+                                        <div class="form-group mb-4">
+                                            <textarea type="text" class="form-control form-control-lg" rows="3" placeholder="Nachricht" asp-for="@msg.TextAdmin" name="TextAdmin"></textarea>
+                                            <span asp-validation-for="TextAdmin" class="bg-primary text-white" aria-hidden="true"></span>
+                                        </div>
+                                        <button type="submit" class="btn btn-lg btn-success btn-block mb-4 mt-4 text-capitalize">Antworten<i class="fas fa-reply ml-2"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="text-white mb-2 text-center" data-aos="fade-up" data-aos-duration="1200"><b>@qivm.NameSite</b></h5>
+            </section>
+            <!-- End of Section -->
+        </div>
+    </section>
+    <!-- End of Section -->
+</main>
+<!-- End of Main Content -->
+@await Html.PartialAsync("P_Footer")
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

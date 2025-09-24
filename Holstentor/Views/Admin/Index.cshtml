@@ -1,0 +1,470 @@
+﻿@{
+    ViewData["Title"] = "Meine Verwaltung";
+    //Layout = "~/Views/Shared/_MainLayout.cshtml";
+    Holstentor.Models.AdminDashboardRepository.AdminDashboard_Rep adr = new Holstentor.Models.AdminDashboardRepository.AdminDashboard_Rep();
+    var qusers = adr.GetUsersSend().ToList();
+    var qalbum = adr.GetAlbum().ToList();
+    var qindex = adr.GetIndex();
+    var qcategory = adr.GetCategory().ToList();
+    Holstentor.Models.HomeRepository.HomeRep ivm = new Holstentor.Models.HomeRepository.HomeRep();
+    var qivm = ivm.GetIndexHeaderSelect();
+}
+
+@await Html.PartialAsync("P_HeaderBG")
+<!-- Main Content -->
+<main class="main">
+    <!-- Section -->
+    <section class="py-0">
+        <div class="bg-web">
+            <!-- Section -->
+            <section class="py-0 pb-3">
+                <div class="jumbotron jumbotron-fluid bg-rosa py-7">
+                    <div class="container">
+                        <h1 class="text-web fs-3 fs-lg-5 mt-5" data-aos="fade-down" data-aos-duration="1000">Meine Verwaltung</h1>
+                        <h5 class="text-black mb-2" data-aos="fade-down" data-aos-duration="1100">Mein Konto</h5>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="card text-white bg-primary mb-3">
+                                    <div class="card-header"><i class="fas fa-users mr-2 fs-1"></i>Die Benutzer</div>
+                                    <div class="card-body">
+                                        @*<h5 class="card-title fs--1">@adr.GetUsers().Count()</h5>*@
+                                        <h5 class="card-title fs--1">Gesamtzahl der Benutzer: @adr.GetUsersCount()</h5>
+                                        <h5 class="card-title fs--1">Letzte Anzahl von Benutzern: @adr.GetLastUsers().Count()</h5>
+                                        @*<p class="card-text"></p>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="card text-white bg-success mb-3">
+                                    <div class="card-header"><i class="fas fa-comments mr-2 fs-1"></i>Die Nachrichten</div>
+                                    <div class="card-body">
+                                        @*<h5 class="card-title fs--1">@adr.GetUsersNachrichtCount()</h5>*@
+                                        <h5 class="card-title fs--1">Gelesen Nachrichten: @adr.GetTotalUsersNachrichtTrueCount(User.Identity.Name)</h5>
+                                        <h5 class="card-title fs--1">Ungelesen Nachrichten: @adr.GetTotalUsersNachrichtFalseCount(User.Identity.Name)</h5>
+                                        @*<p class="card-text"></p>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="card text-white bg-dark mb-3">
+                                    <div class="card-header"><i class="fas fa-cog mr-2 fs-1"></i>Einstellungen</div>
+                                    <div class="card-body row text-center w-30vh">
+                                        <div class="col-lg-6">
+                                            <a class="btn btn-outline-light mb-2 fs--1" href="/Admin"><i class="fas fa-home mr-2"></i>Zuhause</a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <a class="btn btn-outline-light mb-2 fs--1" href="/Admin/Kategorie"><i class="fas fa-th-list mr-2"></i>Kategorie</a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <form class="" asp-controller="Admin" asp-action="Startseite" method="post">
+                                                <input type="hidden" name="id" value="1" />
+                                                <button type="submit" class="btn btn-outline-light mb-2 fs--1"><i class="fas fa-edit mr-2"></i>Startseite</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <a class="btn btn-outline-light mb-2 fs--1" href="/Admin/Produkte"><i class="fas fa-shopping-cart mr-2"></i>Produkte</a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <a class="btn btn-outline-light mb-2 fs--1" href="/Admin/Nachrichten"><i class="fas fa-comments mr-2"></i>Nachrichten</a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <a class="btn btn-outline-light mb-2 fs--1" href="/Admin/Produktgalerie"><i class="fas fa-file-image mr-2"></i>Produktgalerie</a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <a class="btn btn-outline-light mb-2 fs--1" href="/Admin/Unterkategorie"><i class="fas fa-clipboard-list mr-2"></i>Unterkategorie</a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <a class="btn btn-outline-light mb-2 fs--1" href="/Admin/PasswortAendern"><i class="fas fa-key mr-2"></i>Passwort ändern</a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <a class="btn btn-outline-light mb-2 fs--1" href="/Admin/Galerie"><i class="fas fa-images mr-2"></i>Galerie anzeigen</a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <a class="btn btn-outline-light mb-2 fs--1" href="/Admin/DetailsBenutzer"><i class="fas fa-users mr-2"></i>Benutzer anzeigen</a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <form class="" asp-controller="Admin" asp-action="VideoBearbeiten" method="post">
+                                                <input type="hidden" name="id" value="1" />
+                                                <button type="submit" class="btn btn-outline-light mb-2 fs--1"><i class="fas fa-edit mr-2"></i>Video-Startseite</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <form class="" asp-controller="Admin" asp-action="FotoUeberunsBearbeiten" method="post">
+                                                <input type="hidden" name="id" value="1" />
+                                                <button type="submit" class="btn btn-outline-light mb-2 fs--1"><i class="fas fa-edit mr-2"></i>Foto-Über uns</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <form class="" asp-controller="Admin" asp-action="FotoGalerieBearbeiten" method="post">
+                                                <input type="hidden" name="id" value="1" />
+                                                <button type="submit" class="btn btn-outline-light mb-2 fs--1"><i class="fas fa-edit mr-2"></i>Foto-Galerie</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <form class="" asp-controller="Admin" asp-action="FotoFusszeileBearbeiten" method="post">
+                                                <input type="hidden" name="id" value="1" />
+                                                <button type="submit" class="btn btn-outline-light mb-2 fs--1"><i class="fas fa-edit mr-2"></i>Foto-Fußzeile</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <form class="" asp-controller="Admin" asp-action="KopfzeileFusszeileUeber" method="post">
+                                                <input type="hidden" name="id" value="1" />
+                                                <button type="submit" class="btn btn-outline-light mb-2 fs--1"><i class="fas fa-edit mr-2"></i>Kopfzeile/Fußzeile/Über uns</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content py-3 px-3 px-sm-0">
+                            <div class="tab-pane fade show active">
+                                <div class="container">
+                                    <!-- Pagination -->
+                                    <div class="col-12">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                <li>
+                                                    <form class="" asp-controller="Admin" asp-action="Startseite" method="post">
+                                                        <input type="hidden" name="id" value="1" />
+                                                        <button type="submit" class="btn btn-dark mb-2 fs--1"><i class="fas fa-edit mr-2"></i>Startseite</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- End of Pagination -->
+                                    <div class="table-responsive mb-2 mt-3">
+                                        <table class="table table-hover table-striped table-bordered text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Titel</th>
+                                                    <th>Text1</th>
+                                                    <th>Text2</th>
+                                                    <th>Text3</th>
+                                                    <th>Text4</th>
+                                                    <th>Text5</th>
+                                                    <th><i class="fas fa-edit text-warning"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Titel</th>
+                                                    <th>Text1</th>
+                                                    <th>Text2</th>
+                                                    <th>Text3</th>
+                                                    <th>Text4</th>
+                                                    <th>Text5</th>
+                                                    <th><i class="fas fa-edit text-warning"></i></th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <tr>
+                                                    <th>@qindex.IDIndex</th>
+                                                    <th>@qindex.Title</th>
+                                                    <th>@qindex.TypedText1</th>
+                                                    <th>@qindex.TypedText2</th>
+                                                    <th>@qindex.TypedText3</th>
+                                                    <th>@qindex.TypedText4</th>
+                                                    <th>@qindex.TypedText5</th>
+                                                    <th>
+                                                        <form class="" asp-controller="Admin" asp-action="Startseite" method="post">
+                                                            <input type="hidden" asp-for="@qindex.IDIndex" name="id" value="@qindex.IDIndex" />
+                                                            <button type="submit" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                                        </form>
+                                                    </th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Pagination -->
+                                    <div class="col-12">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                <li>
+                                                    <form class="" asp-controller="Admin" asp-action="KopfzeileFusszeileUeber" method="post">
+                                                        <input type="hidden" name="id" value="1" />
+                                                        <button type="submit" class="btn btn-dark mb-2 fs--1"><i class="fas fa-edit mr-2"></i>Kopfzeile/Fußzeile/Über</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- End of Pagination -->
+                                    <div class="table-responsive mb-2 mt-3">
+                                        <table class="table table-hover table-striped table-bordered text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Adresse</th>
+                                                    <th>Beschreibung</th>
+                                                    @*<th>E-Mail</th>*@
+                                                    @*<th>EmbedLinkGoogleMap</th>*@
+                                                    <th>Websitename</th>
+                                                    <th>Telefonnummer</th>
+                                                    <th><i class="fas fa-edit text-warning"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Adresse</th>
+                                                    <th>Beschreibung</th>
+                                                    @*<th>E-Mail</th>*@
+                                                    @*<th>EmbedLinkGoogleMap</th>*@
+                                                    <th>Websitename</th>
+                                                    <th>Telefonnummer</th>
+                                                    <th><i class="fas fa-edit text-warning"></i></th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <tr>
+                                                    <th>@qivm.IDIndex</th>
+                                                    <th>@qivm.Street @qivm.Number<br />@qivm.PostCode @qivm.City<br />@qivm.Country</th>
+                                                    <th>@qivm.Description</th>
+                                                    @*<th>@qivm.Email</th>*@
+                                                    @*<th>@qivm.EmbedLinkGoogleMap</th>*@
+                                                    <th>@qivm.NameSite</th>
+                                                    <th>@qivm.PhoneNumber</th>
+                                                    <th>
+                                                        <form class="" asp-controller="Admin" asp-action="KopfzeileFusszeileUeber" method="post">
+                                                            <input type="hidden" asp-for="@qindex.IDIndex" name="id" value="@qindex.IDIndex" />
+                                                            <button type="submit" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                                        </form>
+                                                    </th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Pagination -->
+                                    <div class="col-12">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                <li><a class="btn btn-dark" href="/Admin/Kategorie"><i class="fas fa-th-list mr-2"></i>Kategorie</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- End of Pagination -->
+                                    <div class="table-responsive mb-2">
+                                        <table class="table table-hover table-striped table-bordered text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Kategoriename</th>
+                                                    <th><span class="text-success">Aktiv</span>/<span class="text-danger">Inaktiv</span></th>
+                                                    @*<th><i class="fas fa-check text-success"></i>/<i class="fas fa-times text-danger"></i></th>*@
+                                                    <th><i class="fas fa-edit text-warning"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Kategoriename</th>
+                                                    <th><span class="text-success">Aktiv</span>/<span class="text-danger">Inaktiv</span></th>
+                                                    @*<th><i class="fas fa-check text-success"></i>/<i class="fas fa-times text-danger"></i></th>*@
+                                                    <th><i class="fas fa-edit text-warning"></i></th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                @{
+                                                    int icategory = 1;
+                                                    if (qcategory.Count() > 0)
+                                                    {
+                                                        @foreach (var item in qcategory.OrderBy(a => a.TitleCategory).Take(10))
+                                                        {
+                                                            string bg = "";
+                                                            if (item.ActivePassive == false)
+                                                            {
+                                                                bg = "background-color: #ffeaed;";
+                                                            }
+                                                            <tr style="@bg">
+                                                                <th>@icategory</th>
+                                                                <th>@item.TitleCategory</th>
+                                                                @*<th> @item.ActivePassive</th>*@
+                                                                <th>
+                                                                    @{
+                                                                        if (item.ActivePassive == false)
+                                                                        {
+                                                                            <a asp-action="KategorieAktiv" asp-route-id="@item.ID" class="btn btn-success" style="width: 50px;"><i class="fas fa-check"></i></a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a asp-action="KategorieInaktiv" asp-route-id="@item.ID" class="btn btn-danger" style="width: 50px;"><i class="fas fa-times"></i></a>
+                                                                        }
+                                                                    }
+                                                                </th>
+                                                                <th>
+                                                                    <form class="" asp-controller="Admin" asp-action="KategorieBearbeiten" method="post">
+                                                                        <input type="hidden" asp-for="@item.ID" name="ID" value="@item.ID" />
+                                                                        <button type="submit" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                                                    </form>
+                                                                </th>
+                                                            </tr>
+                                                            icategory = icategory + 1;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td class="bg-danger text-white" colspan="4">-</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Pagination -->
+                                    <div class="col-12">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                <li><a class="btn btn-dark" href="/Admin/DetailsBenutzer"><i class="fas fa-users mr-2"></i>Benutzer anzeigen</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- End of Pagination -->
+                                    <div class="table-responsive mb-2">
+                                        <table class="table table-hover table-striped table-bordered text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>E-Mail</th>
+                                                    <th><span class="text-success">Aktiv</span>/<span class="text-danger">Inaktiv</span></th>
+                                                    @*<th><i class="fas fa-check text-success"></i>/<i class="fas fa-times text-danger"></i></th>*@
+                                                    <th><i class="fas fa-address-card text-info"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>E-Mail</th>
+                                                    <th><span class="text-success">Aktiv</span>/<span class="text-danger">Inaktiv</span></th>
+                                                    @*<th><i class="fas fa-check text-success"></i>/<i class="fas fa-times text-danger"></i></th>*@
+                                                    <th><i class="fas fa-address-card text-info"></i></th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                @{
+                                                    int i = 1;
+                                                    if (qusers.Count() > 0)
+                                                    {
+                                                        @foreach (var item in qusers.OrderByDescending(a => a.Date).Take(10))
+                                                        {
+                                                            string bg = "";
+                                                            if (item.EmailConfirmed == false)
+                                                            {
+                                                                bg = "background-color: #ffeaed;";
+                                                            }
+                                                            <tr style="@bg">
+                                                                <th>@i</th>
+                                                                <th>@item.Email</th>
+                                                                @*<th>@item.EmailConfirmed</th>*@
+                                                                <th>
+                                                                    <a asp-action="AktivBenutzer" class="btn btn-success" asp-route-id="@item.Id" style="width: 50px;"><i class="fas fa-check"></i></a>
+                                                                </th>
+                                                                <th>
+                                                                    <form class="" asp-controller="Admin" asp-action="DetailsBenutzerShow" method="post">
+                                                                        <input type="hidden" asp-for="@item.Id" name="Id" value="@item.Id" />
+                                                                        <button type="submit" class="btn btn-info"><i class="fas fa-address-card"></i></button>
+                                                                    </form>
+                                                                    @*<a asp-action="DetailsShow" asp-route-id="@item.Id" class="btn btn-info" style="width: 50px;"><i class="fas fa-address-card"></i></a>*@
+                                                                </th>
+                                                            </tr>
+                                                            i = i + 1;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td class="bg-danger text-white" colspan="4">-</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Pagination -->
+                                    <div class="col-12">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                <li><a class="btn btn-dark" href="/Admin/Galerie"><i class="fas fa-images mr-2"></i>Galerie anzeigen</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- End of Pagination -->
+                                    <div class="table-responsive mb-2">
+                                        <table class="table table-hover table-striped table-bordered text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Foto</th>
+                                                    <th>Fotoname</th>
+                                                    <th>Datum</th>
+                                                    <th><i class="fas fa-edit text-warning"></i></th>
+                                                    <th><i class="fas fa-trash text-danger"></i></th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Foto</th>
+                                                    <th>Fotoname</th>
+                                                    <th>Datum</th>
+                                                    <th><i class="fas fa-edit text-warning"></i></th>
+                                                    <th><i class="fas fa-trash text-danger"></i></th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                @{
+                                                    int j = 1;
+                                                    if (qalbum.Count() > 0)
+                                                    {
+                                                        @foreach (var item in qalbum.OrderByDescending(a => a.Date).Take(10))
+                                                        {
+                                                            <tr>
+                                                                <th>@j</th>
+                                                                <th>
+                                                                    <img src="../assets/img/backgrounds/album/@item.Image" width="125" height="55" alt="@item.NamePic" />
+                                                                </th>
+                                                                <th>@item.NamePic</th>
+                                                                <th>@item.Date</th>
+                                                                <th>
+                                                                    <form class="" asp-controller="Admin" asp-action="GalerieBearbeiten" method="post">
+                                                                        <input type="hidden" asp-for="@item.ID" name="ID" value="@item.ID" />
+                                                                        <button type="submit" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                                                    </form>
+                                                                </th>
+                                                                <th>
+                                                                    <form class="" asp-controller="Admin" asp-action="GalerieLöschen" method="post">
+                                                                        <input type="hidden" asp-for="@item.ID" name="ID" value="@item.ID" />
+                                                                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                                    </form>
+                                                                </th>
+                                                            </tr>
+                                                            j = j + 1;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td class="bg-danger text-white" colspan="6">-</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="text-white mb-2 text-center" data-aos="fade-up" data-aos-duration="1200"><b>@qivm.NameSite</b></h5>
+            </section>
+            <!-- End of Section -->
+        </div>
+    </section>
+    <!-- End of Section -->
+</main>
+<!-- End of Main Content -->
+@await Html.PartialAsync("P_Footer")

@@ -1,0 +1,90 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = "Mein Profil";
+    //Layout = "~/Views/Shared/_MainLayout.cshtml";
+    //ApplicationUser auser = new ApplicationUser();
+    //var username = auser.UserName;
+    var username = User.Identity.Name;
+    Holstentor.Models.ProfileRepository.UserRep prorep = new Holstentor.Models.ProfileRepository.UserRep();
+    var quser = prorep.GetUser(username);
+}
+<div class="container-fluid">
+    <div class="row p-5">
+        <div class="col-lg-3">
+            <h5 class="text-web mb-2">E-Mail-Addresse:</h5>
+            <input type="email" class="form-control form-control-lg" placeholder="E-Mail-Addresse" asp-for="Email" name="Email" value="@quser.Email" disabled>
+        </div>
+        <div class="col-lg-3">
+            <h5 class="text-web mb-2">Vorname:</h5>
+            <input type="text" class="form-control form-control-lg" placeholder="Vorname" asp-for="Name" name="Name" value="@quser.Name" disabled>
+        </div>
+        <div class="col-lg-3">
+            <h5 class="text-web mb-2">Familienname:</h5>
+            <input type="text" class="form-control form-control-lg" placeholder="Familienname" asp-for="NameFamily" name="NameFamily" value="@quser.NameFamily" disabled>
+        </div>
+        <div class="col-lg-3">
+            <h5 class="text-web mb-2">Telefonnummer:</h5>
+            <input type="tel" class="form-control form-control-lg" placeholder="Telefonnummer" asp-for="PhoneNumber" name="PhoneNumber" value="@quser.PhoneNumber" disabled>
+        </div>
+        <div class="col-lg-5 mt-4">
+        </div>
+        <div class="col-lg-2 mt-4">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-lg btn-primary btn-block mb-4" data-toggle="modal" data-target="#Aktualisieren">Aktualisieren<i class="fas fa-user-edit ml-2"></i></button>
+            <!-- End of Button trigger modal -->
+        </div>
+        <div class="col-lg-5 mt-4">
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="Aktualisieren" tabindex="-1" role="dialog" aria-labelledby="Aktualisieren" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Mein Profil</h5>
+                @*<button type="button" class="text-dark close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+            <div class="modal-body">
+                <form class="" asp-controller="Profile" asp-action="MeinProfilBearbeiten" method="post">
+                    @*<h1 class="text-web fs-3 fs-lg-5" data-aos="fade-down" data-aos-duration="1000">Bitte loggen Sie sich ein</h1>
+                    <h5 class="text-black mb-2" data-aos="fade-down" data-aos-duration="1050">Einloggen, um ihren Account zu verwalten</h5>
+                    <div class="form-group mb-4" data-aos="zoom-in" data-aos-duration="1100">
+                        <input type="text" class="form-control form-control-lg" placeholder="UserName" asp-for="UserName" name="UserName" value="@quser.UserName" disabled>
+                    </div>
+                    <h5 class="text-web mb-2">E-Mail-Addresse:</h5>
+                    <div class="form-group mb-4">
+                        <input type="email" class="form-control form-control-lg" placeholder="E-Mail-Addresse" asp-for="Email" name="Email" value="@quser.Email" disabled>
+                    </div>*@
+                    <h5 class="text-web mb-2">Vorname:</h5>
+                    <div class="form-group mb-4">
+                        <input type="text" class="form-control form-control-lg" placeholder="Vorname" asp-for="Name" name="Name" value="@quser.Name">
+                        <span asp-validation-for="Name" class="bg-primary text-white"></span>
+                    </div>
+                    <h5 class="text-web mb-2">Familienname:</h5>
+                    <div class="form-group mb-4">
+                        <input type="text" class="form-control form-control-lg" placeholder="Familienname" asp-for="NameFamily" name="NameFamily" value="@quser.NameFamily">
+                        <span asp-validation-for="NameFamily" class="bg-primary text-white"></span>
+                    </div>
+                    <h5 class="text-web mb-2">Telefonnummer: [Beispiel 0176xxxxxxxx]</h5>
+                    <div class="form-group mb-4">
+                        <input type="tel" class="form-control form-control-lg" placeholder="Telefonnummer" asp-for="PhoneNumber" name="PhoneNumber" value="@quser.PhoneNumber">
+                        <span asp-validation-for="PhoneNumber" class="bg-primary text-white"></span>
+                    </div>
+                    @*<button type="submit" class="btn btn-lg btn-primary btn-block mb-4">Aktualisieren<i class="fas fa-user-edit ml-2"></i></button>*@
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Schließen</button>
+                        <button type="submit" class="btn btn-success">Änderungen speichern</button>
+                    </div>
+                </form>
+            </div>
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+<!-- End of Modal -->

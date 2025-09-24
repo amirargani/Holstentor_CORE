@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Mein Profil";
+    //Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var username = User.Identity.Name;
+    Holstentor.Models.ProfileRepository.UserRep prorep = new Holstentor.Models.ProfileRepository.UserRep();
+    var quser = prorep.GetUser(username);
+    Holstentor.Models.HomeRepository.HomeRep ivm = new Holstentor.Models.HomeRepository.HomeRep();
+    var qivm = ivm.GetIndexHeaderSelect();
+}
+
+@await Html.PartialAsync("P_HeaderBG")
+<!-- Main Content -->
+<main class="main">
+    <!-- Section -->
+    <section class="py-0">
+        <div class="bg-web">
+            <!-- Section -->
+            <section class="py-0 pb-3">
+                <div class="jumbotron jumbotron-fluid bg-rosa py-7">
+                    <div class="container">
+                        <h1 class="text-web fs-3 fs-lg-5 mt-5" data-aos="fade-down" data-aos-duration="1000">Mein persönlichen Daten</h1>
+                        <h5 class="text-black mb-2" data-aos="fade-down" data-aos-duration="1100">Mein Konto</h5>
+                        <nav>
+                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link @*active*@" asp-action="Index" asp-controller="Profile">Mein Profil</a>
+                                @{
+                                    if (prorep.InsertUser(username) == true)
+                                    {
+                                        <a class="nav-item nav-link" asp-action="Nachricht" asp-controller="Profile">Meine Nachricht</a>
+                                        <a class="nav-item nav-link" asp-action="PasswortAendern" asp-controller="Profile">Passwort</a>
+                                    }
+                                    else if (prorep.InsertUser(username) == false)
+                                    {
+                                        <a class="nav-item nav-link" asp-action="Index" asp-controller="Profile">Meine Nachricht</a>
+                                        <a class="nav-item nav-link" asp-action="Index" asp-controller="Profile">Passwort</a>
+                                    }
+                                }
+                            </div>
+                        </nav>
+                        <div class="tab-content py-3 px-3 px-sm-0">
+                            <div class="tab-pane fade show active">
+                                @{
+                                    if (prorep.InsertUser(username) == false)
+                                    {
+                                        @await Html.PartialAsync("P_MyProfile")
+                                    }
+                                    else if (prorep.InsertUser(username) == true)
+                                    {
+                                        @await Html.PartialAsync("P_EditMyProfile")
+                                    }
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="text-white mb-2 text-center" data-aos="fade-up" data-aos-duration="1200"><b>@qivm.NameSite</b></h5>
+            </section>
+            <!-- End of Section -->
+        </div>
+    </section>
+    <!-- End of Section -->
+</main>
+<!-- End of Main Content -->
+@await Html.PartialAsync("P_Footer")
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -1,0 +1,208 @@
+﻿@{
+    Holstentor.Models.HomeRepository.HomeRep ivm = new Holstentor.Models.HomeRepository.HomeRep();
+    var qivm = ivm.GetIndexHeaderSelect();
+    var qupload = ivm.GetHochladen();
+    var username = User.Identity.Name;
+    var qcategory = ivm.GetCategoryLink().ToList();
+    var qsubcategory = ivm.GetSubCategoryLink().ToList();
+}
+
+<!-- Header --> @*data-transparent data-text-color="#ffffff"*@
+<header class="spyre-navbar navbar navbar-expand-lg fixed-top align-items-center bg-web bg-rosa-bb" data-text-color="#ffffff">
+    <div class="container">
+        <a class="navbar-brand mr-lg-5 mr-xl-7" href="/" style="box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+            <img src="~/assets/img/backgrounds/upload/logo/@qupload.Logo" class="d-none d-lg-block" alt="Spyre" width="183" />
+            @*<img src="~/assets/img/logo.svg" class="d-block d-lg-none" alt="Spyre" width="150" />*@
+        </a>
+        <span class="navbar-text flex-fill d-block d-lg-none text-white"><b class="pl-1 text-white"><a class="pl-1 text-white" href="/">@qivm.NameSite</a></b></span>
+        <span class="navbar-text flex-fill d-none d-md-inline-block text-white">
+            <i class="fas fa-envelope ml-2"></i><b class="pl-2 text-white">@qivm.Email</b><i class="fas fa-phone ml-2"></i><b class="pl-2 text-white">@qivm.PhoneNumber</b>
+        </span>
+        @*<div class="search d-none d-lg-flex justify-content-end ml-auto mr-2">
+            <input class="form-control mr-2" type="text">
+            <i class="zmdi zmdi-search"></i>
+        </div>*@
+        <span class="menu-toggle pl-5 text-white fs--1" style="top: 28px; z-index:-1;">Menü</span>
+        <div class="menu-toggle">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="cross">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- Spyrenav Overlay -->
+    <div class="spyre-navbar-overlay overlay-slide">
+        <div class="container">
+            <div class="row">
+                <div class="spyre-navbar-nav-container col-md-6 col-lg-5 col-xl-4 bg-rosa bg-rosa-br ext-l">
+                    <nav class="spyre-navbar-nav">
+                        <ul class="spyre-nav">
+                            <li class="spyre-nav-item"><a href="/" class="spyre-nav-link"><i class="fas fa-home mr-2 fs-2"></i>Start</a></li>
+                            @{
+                                foreach (var itemcategory in qcategory.OrderByDescending(a => a.TitleCategory))
+                                {
+                                    if (itemcategory.ActivePassive == true)
+                                    {
+                                        <li class="spyre-nav-item dropdown">
+                                            @if (itemcategory.FontName == null || itemcategory.FontName == "")
+                                            {
+                                                <h1 class="spyre-nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;"><i class="fas fa-th-list mr-2 fs-2"></i>@itemcategory.TitleCategory</h1>
+                                            }
+                                            else
+                                            {
+                                                <h1 class="spyre-nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;"><i class="@itemcategory.FontName mr-2 fs-2"></i>@itemcategory.TitleCategory</h1>
+                                            }
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                @foreach (var itemsubcategory in qsubcategory.Where(a => a.CategoryID == itemcategory.ID).OrderBy(a => a.TitleSubCategory))
+                                                {
+                                                    if (itemsubcategory.ActivePassive == true)
+                                                    {
+                                                        if (itemsubcategory.FontName == null || itemsubcategory.FontName == "")
+                                                        {
+                                                            <li class="dropdown-menu-item"><a href="/Home/Unterkategoriesuche?id=@itemsubcategory.Link" class="dropdown-menu-link"><i class="fas fa-chevron-circle-right mr-2 fs-1"></i>@itemsubcategory.TitleSubCategory</a></li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li class="dropdown-menu-item"><a href="/Home/Unterkategoriesuche?id=@itemsubcategory.Link" class="dropdown-menu-link"><i class="@itemsubcategory.FontName mr-2 fs-1"></i>@itemsubcategory.TitleSubCategory</a></li>
+                                                        }
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                }
+                            }
+                            <li class="spyre-nav-item"><a asp-controller="Home" asp-action="Galerie" class="spyre-nav-link"><i class="fas fa-images mr-2 fs-2"></i>Galerie</a></li>
+                            <li class="spyre-nav-item"><a asp-controller="Home" asp-action="Kontakt" class="spyre-nav-link"><i class="fas fa-map-signs mr-2 fs-2"></i>Kontakt</a></li>
+                            <li class="spyre-nav-item"><a asp-controller="Home" asp-action="Ueberuns" class="spyre-nav-link"><i class="fas fa-info-circle mr-2 fs-2"></i>Über uns</a></li>
+                            <li class="spyre-nav-item"><a href="#Landkarte" data-toggle="modal" data-target="#Landkarte" class="spyre-nav-link"><i class="fas fa-map-marker-alt mr-2 fs-2"></i>Landkarte</a></li>
+                            @{
+                                if (ivm.GetUserRole(username) == "User")
+                                {
+                                    <li class="spyre-nav-item dropdown">
+                                        <h1 class="spyre-nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;"><i class="fas fa-cog mr-2 fs-2"></i>Einstellungen</h1>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li class="dropdown-menu-item"><a asp-controller="Profile" asp-action="Index" class="dropdown-menu-link"><i class="fas fa-user mr-2 fs-1"></i>Mein Profil</a></li>
+                                            <li class="dropdown-menu-item"><a asp-controller="Profile" asp-action="Nachricht" class="dropdown-menu-link"><i class="fas fa-comment mr-2 fs-1"></i>Meine Nachricht</a></li>
+                                            @*<li class="dropdown-menu-item"><a asp-controller="Profile" asp-action="MessageReply" class="dropdown-menu-link"><i class="fas fa-comments mr-2 fs-1"></i>Nachricht empfangen</a></li>*@
+                                            <li class="dropdown-menu-item"><a asp-controller="Profile" asp-action="PasswortAendern" class="dropdown-menu-link"><i class="fas fa-key mr-2 fs-1"></i>Passwort</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="spyre-nav-item"><a asp-action="Logout" asp-controller="Account" class="spyre-nav-link"><i class="fas fa-power-off mr-2 fs-2"></i>Ausloggen</a></li>
+                                }
+                                if (ivm.GetUserRole(username) == "Admin")
+                                {
+                                    <li class="spyre-nav-item dropdown">
+                                        <a href="#" class="spyre-nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog mr-2 fs-2"></i>Einstellungen</a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li class="dropdown-menu-item"><a asp-controller="Admin" asp-action="Index" class="dropdown-menu-link"><i class="fas fa-user-tie mr-2 fs-1"></i>Meine Verwaltung</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="spyre-nav-item"><a asp-action="Logout" asp-controller="Account" class="spyre-nav-link"><i class="fas fa-power-off mr-2 fs-2"></i>Ausloggen</a></li>
+                                }
+                                if (ivm.GetUserRole(username) == null) // else
+                                {
+                                    <li class="spyre-nav-item"><a asp-action="Login" asp-controller="Account" class="spyre-nav-link"><i class="fas fa-sign-in-alt mr-2 fs-2"></i>Einloggen</a></li>
+                                }
+                            }
+                            @*@{
+                                if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="spyre-nav-item dropdown">
+                                        <a href="#" class="spyre-nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog mr-2 fs-2"></i>Einstellungen</a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li class="dropdown-menu-item"><a asp-controller="Profile" asp-action="Index" class="dropdown-menu-link"><i class="fas fa-user mr-2 fs-1"></i>Mein Profil</a></li>
+                                            <li class="dropdown-menu-item"><a asp-controller="Profile" asp-action="Message" class="dropdown-menu-link"><i class="fas fa-comment mr-2 fs-1"></i>Nachricht senden</a></li>
+                                            <li class="dropdown-menu-item"><a asp-controller="Profile" asp-action="MessageReply" class="dropdown-menu-link"><i class="fas fa-comments mr-2 fs-1"></i>Nachricht empfangen</a></li>
+                                            <li class="dropdown-menu-item"><a asp-controller="Profile" asp-action="ChangePassword" class="dropdown-menu-link"><i class="fas fa-key mr-2 fs-1"></i>Passwort</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="spyre-nav-item"><a asp-action="Logout" asp-controller="Account" class="spyre-nav-link"><i class="fas fa-power-off mr-2 fs-2"></i>Ausloggen</a></li>
+                                }
+                                else
+                                {
+                                    <li class="spyre-nav-item"><a asp-action="Login" asp-controller="Account" class="spyre-nav-link"><i class="fas fa-sign-in-alt mr-2 fs-2"></i>Einloggen</a></li>
+                                }
+                            }*@
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-7 col-xl-8 d-none d-md-block">
+                    <div class="d-flex flex-column h-100">
+                        <div class="d-flex h-100">
+                            <div class="align-self-center">
+                                <div class="text-uppercase"
+                                     data-background-text="Restaurant"
+                                     data-color="#f8c6ff"
+                                     data-opacity="0.02"
+                                     data-font-size="85px"
+                                     data-font-weight="500"
+                                     data-offset-x="5%"
+                                     data-letter-spacing="5px"></div>
+                                <div class="text-uppercase"
+                                     data-background-text="am"
+                                     data-color="#f8c6ff"
+                                     data-opacity="0.04"
+                                     data-font-size="175px"
+                                     data-font-weight="500"
+                                     data-offset-x="29%"
+                                     data-padding="7vh 0 2vh 0"
+                                     data-letter-spacing="5px"></div>
+                                <div class="text-uppercase"
+                                     data-background-text="Holstentor"
+                                     data-color="#f8c6ff"
+                                     data-opacity="0.03"
+                                     data-font-size="140px"
+                                     data-font-weight="500"
+                                     data-offset-x="10%"
+                                     data-letter-spacing="5px"></div>
+                            </div>
+                        </div>
+                        @*<div class="mt-auto">
+                            <ul class="nav flex-nowrap float-right">
+                                <li class="nav-item">
+                                    <a class="nav-link px-2" href="#" target="_blank">
+                                        <i class="zmdi zmdi-twitter fs-2 text-white"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link px-2" href="#" target="_blank">
+                                        <i class="zmdi zmdi-instagram fs-2 text-white"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link px-2" href="#" target="_blank">
+                                        <i class="zmdi zmdi-facebook-box fs-2 text-white"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link px-2" href="#" target="_blank">
+                                        <i class="zmdi zmdi-pinterest fs-2 text-white"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link px-2" href="#" target="_blank">
+                                        <i class="zmdi zmdi-flickr fs-2 text-white"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link px-2" href="#" target="_blank">
+                                        <i class="zmdi zmdi-youtube fs-2 text-white"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Spyrenav Overlay -->
+</header>
+<!-- End of Header -->
+@await Html.PartialAsync("P_Location")

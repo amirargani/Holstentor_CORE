@@ -1,0 +1,70 @@
+﻿@model Kategorie_Db
+@{
+    ViewData["Title"] = "Meine Verwaltung";
+    //Layout = "~/Views/Shared/_MainLayout.cshtml";
+    Holstentor.Models.HomeRepository.HomeRep ivm = new Holstentor.Models.HomeRepository.HomeRep();
+    var qivm = ivm.GetIndexHeaderSelect();
+}
+
+@await Html.PartialAsync("P_HeaderBG")
+<!-- Main Content -->
+<main class="main">
+    <!-- Section -->
+    <section class="py-0">
+        <div class="bg-web">
+            <!-- Section -->
+            <section class="py-0 pb-3">
+                <div class="jumbotron jumbotron-fluid bg-rosa py-7">
+                    <div class="container">
+                        <h1 class="text-web fs-3 fs-lg-5 mt-5" data-aos="fade-down" data-aos-duration="1000">Meine Verwaltung</h1>
+                        <h5 class="text-black mb-2" data-aos="fade-down" data-aos-duration="1100">Kategoriename hinzufügen</h5>
+                        <div class="tab-content py-3 px-3 px-sm-0">
+                            <div class="tab-pane fade show active">
+                                <!-- Pagination -->
+                                <div class="col-12">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li><a class="btn btn-secondary mr-3" href="/Admin/Kategorie"><i class="fas fa-chevron-circle-left mr-2"></i>Zurück</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <!-- End of Pagination -->
+                                <div class="container">
+                                    <form class="col px-5 px-lg-8 py-6 py-lg-0 mt-3" asp-controller="Admin" asp-action="KategorieErstellen" method="post">
+                                        <div class="form-group mb-4">
+                                            <input type="text" class="form-control form-control-lg" placeholder="Kategoriename" asp-for="TitleCategory" name="TitleCategory">
+                                            <span asp-validation-for="TitleCategory" class="bg-primary text-white" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <input type="text" class="form-control form-control-lg" placeholder="Schriftart" asp-for="FontName" name="FontName">
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <textarea type="text" class="form-control form-control-lg" rows="3" placeholder="Beschreibung" asp-for="Description" name="Description"></textarea>
+                                        </div>
+                                        <div class="form-group mb-4 fs--1">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="form-group form-check d-flex">
+                                                    <input type="checkbox" class="form-check-input" asp-for="ActivePassive" name="ActivePassive">
+                                                    <label class="form-check-label ttext-secondary font-weight-bold" asp-for="ActivePassive"><span class="text-success">Aktiv</span>/<span class="text-danger">Inaktiv</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-lg btn-success btn-block mb-4 mt-4 text-capitalize">Hinzufügen<i class="fas fa-folder-plus ml-2"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="text-white mb-2 text-center" data-aos="fade-up" data-aos-duration="1200"><b>@qivm.NameSite</b></h5>
+            </section>
+            <!-- End of Section -->
+        </div>
+    </section>
+    <!-- End of Section -->
+</main>
+<!-- End of Main Content -->
+@await Html.PartialAsync("P_Footer")
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
